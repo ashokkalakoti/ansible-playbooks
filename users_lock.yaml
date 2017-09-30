@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become_user: root
+
+  tasks:
+ 
+    - name: check if user exists of not and log the status into file /tmp/userstat.txt
+      shell: if  id -a {{ item }} ;then passwd -u {{ item }}; logger lastlog_details; fi
+    #  shell: if  id -a madhu;then passwd -l madhu; fi
+      register: command_output
+      with_items:
+       - testuser
+       - madhu
+       - sandeep
+
+    - debug: var=command_output.stdout_lines

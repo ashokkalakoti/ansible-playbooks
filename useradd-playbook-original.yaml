@@ -1,0 +1,77 @@
+---
+- hosts: all
+  become_user: root
+
+  tasks:
+    - name: add a group
+      group:
+       name=demogrp
+       state=present
+      tags: add_new_group
+
+    # this task adds several users on the target machines , for/standard loop used
+    - name: add several users
+      user:
+       name={{ item }}
+       state=present
+       groups=demogrp
+       shell=/bin/bash
+       password=$1$Ashok$dwd/9b4CCLeuEy.tfB3g/1
+      with_items:
+       - testuser
+       - appltest
+       - applcrp2
+       - appluat
+       - orauat
+       - oratest
+       - oracrp2
+       - applclkj
+       - applactc
+       - oradvlc
+       - appldvlc
+       - oraoem9i
+       - orapatc
+       - applpatc
+       - orarman
+       - oravrms
+       - oravdev
+       - oravprd8
+       - oraclone
+       - applclone
+       - ora9ias
+       - oratibco
+       - oradwa
+       - ora10g
+       - orai2dev
+       - ctmdb6d
+       - ecs500
+       - oradev2
+       - appldev2
+       - pvangala
+       - bginter
+       - rlahiri
+       - amaheshwari
+       - sacharya
+       - sacharya
+       - erudolph
+       - schava
+       - Pdan
+       - rbodempudi
+       - rmadoori
+       - cakkinepally
+       - hpathangi
+       - spatnala
+       - pgajula
+       - dvarkal
+       - jmiller
+       - bstone
+       - bstone
+       - mmachado
+       - Glew
+       - uvegunta
+       - Rlund
+       - rfadtke
+       - pparker
+       - Quest
+
+      tags: add_new_user

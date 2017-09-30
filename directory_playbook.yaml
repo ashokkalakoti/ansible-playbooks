@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+
+   - name: installation  
+     yum:
+       name={{ item }}
+       state=present 
+     with_items:
+       - httpd
+       - ntp
+       - zip-3.0-1.el6
+       
+
+   - name: service start
+     service:
+       name={{ item }}
+       enabled=yes
+       state=started
+     with_items:
+       - httpd 
+       - ntpd 

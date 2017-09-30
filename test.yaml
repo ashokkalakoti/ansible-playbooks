@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become_user: root
+
+  tasks:
+    - name: add a group
+      group:
+       name=demogrp
+       state=present
+      tags: add_new_group
+
+    - name: add several users
+      user:
+       name={{ item }}
+       state=present
+       groups=demogrp
+       shell=/bin/bash
+       password=$1$Ashok$dwd/9b4CCLeuEy.tfB3g/1
+      with_items:
+       - testuser
+       - appltest
+       - applcrp2
+

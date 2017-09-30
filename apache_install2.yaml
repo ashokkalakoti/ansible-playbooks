@@ -1,0 +1,19 @@
+---
+
+- hosts: all
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+
+   - name: apache installation and staring
+     yum: name=httpd  state=present
+
+   - name: start service
+     shell: systemctl start httpd
+     when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
+      
+   - name: start service
+     shell: service httpd start
+     when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'"

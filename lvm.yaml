@@ -1,0 +1,36 @@
+---
+- hosts: appserver1 
+  tasks:
+    - name: Scan the attached LUN
+      shell: echo "- - -" > /sys/class/scsi_host/host0/scan&&echo "- - -" > /sys/class/scsi_host/host1/scan&&echo "- - -" > /sys/class/scsi_host/host2/scan
+
+    - name: Creating Physical Volume
+      shell: pvcreate /dev/sdb
+
+    - name: Volume Group Creation
+      lvg: 
+        vg=vg02 
+        pvs=/dev/sdb
+
+    - name: Logical Volume Creation
+      lvol: 
+        vg=vg01 
+        lv=lv01 
+        size=5g
+     
+    - name: Create a ext4 filesystem on /dev/mapper/vg01-lv01
+      filesystem: fstype=ext4 dev=/dev/mapper/vg01-lv01
+      
+
+    - name: Creating Mount Point for lv01
+      file: path=/mnt/lv-mount2 state=directory mode=0755 
+
+    - name: Mount up device by label
+      mount:
+        name: /mnt/lv-mount 
+        src: /dev/mapper/vg01-lv01
+        fstype: ext4 
+        state: present
+
+   - name: fstab update
+     shell: mount -a

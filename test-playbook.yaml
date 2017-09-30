@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+
+   - name: group creation
+     group:  name=testgrp  state=present 
+  
+   - name: useradding into grp
+     user:   name=ashok uid=1050 group=testgrp
+
+   - name: add testuser2 
+     user: 
+       name=testuser2
+       groups=testgrp
+       shell=/bin/sh
+       comment="test user created by yogesh"
+       home=/home/testuser2
+       password="$1$yogesh$BP2YKsrCRWLK7CNBF6YYw/"
+       state=absent
+
+   - name: add testuser3 
+     user: 
+       name=testuser3
+       group=dummygrp   
+       groups=testgrp
+       shell=/bin/sh
+       comment="test user created by yogesh"
+       home=/home/testuser3
+       password="$1$yogesh$BP2YKsrCRWLK7CNBF6YYw/"
+       generate_ssh_key=yes 
