@@ -30,3 +30,9 @@
         service: name=httpd state=restarted enabled=yes
       - name: RestartSSH
         service: name=sshd state=restarted enambles=yes
+
+
+      - name: Install VSFTPD
+        yum: name=vsftpd state=present
+        service: name=vsftpd state=restarted enambles=yes
+        notify: Restart Vsftpd
